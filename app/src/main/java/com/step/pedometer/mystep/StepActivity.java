@@ -10,7 +10,9 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.support.v4.view.KeyEventCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.widget.TextView;
 
 import com.step.pedometer.mystep.config.Constant;
@@ -127,7 +129,7 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
 
     @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+//        moveTaskToBack(true);  不知道为何加了这条按back键就直接退出到桌面了
         super.onBackPressed();
     }
 
@@ -178,5 +180,16 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
         textSpeed.setText(decimalFormat.format(this.speed) + "m/s");
         return;
     }
+/*
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == event.KEYCODE_BACK) {
+            Intent intent = new Intent(StepActivity.this, MainActivity.class);
+            startActivity(intent);
+            this.finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+*/
 
 }

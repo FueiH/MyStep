@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    android:background="@drawable/main_activity"
+    android:background="@drawable/sky"
     tools:context="com.step.stepcount.stepcount.MainActivity">
 
     <LinearLayout

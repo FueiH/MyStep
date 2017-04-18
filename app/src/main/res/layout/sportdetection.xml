@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/gray"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"></LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="144dp">
+
+        <TextView
+            android:text="仰卧起坐：0个"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewYangwoqizuo"
+            android:textSize="30sp"
+            tools:text="仰卧起坐：0个" />
+
+        <Button
+            android:text="开始"
+            android:layout_width="200dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonYangwoqizuo"
+            tools:text="开始" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="156dp">
+
+        <TextView
+            android:text="俯卧撑：0个"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewFuwocheng"
+            android:textSize="30sp"
+            tools:text="俯卧撑：0个" />
+
+        <Button
+            android:text="开始"
+            android:layout_width="200dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonFuwocheng"
+            tools:text="开始" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="引体向上：0个"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewYintixiangshang"
+            android:textSize="30sp"
+            tools:text="引体向上：0个" />
+
+        <Button
+            android:text="开始"
+            android:layout_width="200dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonYintixiangshang"
+            tools:text="开始" />
+    </LinearLayout>
+</LinearLayout>

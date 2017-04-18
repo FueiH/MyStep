@@ -23,10 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StepActivity">
-
-        </activity>
-
+        <activity android:name=".StepActivity"></activity>
+        <activity android:name=".FallActivity"></activity>
+        <activity android:name=".SportActivity"></activity>
         <service
             android:name=".service.StepService"
             android:process="com.base.basepedo.step"

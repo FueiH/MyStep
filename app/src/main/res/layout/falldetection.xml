@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/gray"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="384dp"
+        android:layout_height="70dp"
+        android:layout_weight="0.03">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="383dp"
+        android:layout_height="63dp">
+
+        <TextView
+            android:text="联系人手机号码"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="114dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@null"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:textColor="@color/white"
+            android:hint="请输入手机号码"
+            android:textSize="24sp" />
+
+        <Button
+            android:text="设置"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonSet"
+            android:layout_width="100dp"
+            tools:text="设置" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="117dp">
+
+        <Button
+            android:text="开启检测"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/buttonStartService"
+            tools:text="开启检测"
+            android:layout_width="150dp" />
+    </LinearLayout>
+</LinearLayout>
