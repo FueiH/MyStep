@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 
 public class FallActivity extends Activity {
-    private static final String MESSAGE = "older falled";
+    private static final String MESSAGE = "102";
     private static final String NAME = "Fuei";
     private static final String DEFAULTSTRING = "defaultString";
     private static final String PHONENUMBER = "phoneNumber";
@@ -90,7 +90,7 @@ public class FallActivity extends Activity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 1);
         }
         SmsManager manager = SmsManager.getDefault();
-        number = "15700086134";
+        number = "10001";
         ArrayList<String> texts = manager.divideMessage(message);
         for (String text : texts) {
             manager.sendTextMessage(number, null, text, null, null);
