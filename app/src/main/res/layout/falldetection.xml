@@ -32,7 +32,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="114dp">
+        android:layout_height="114dp"
+        android:layout_weight="0.17">
 
         <EditText
             android:layout_width="match_parent"
@@ -41,18 +42,18 @@
             android:background="@null"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText"
+            android:id="@+id/editTextPhone"
             android:textColor="@color/white"
             android:hint="请输入手机号码"
             android:textSize="24sp" />
 
         <Button
-            android:text="设置"
+            android:text="设置并保存"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:id="@+id/buttonSet"
+            android:id="@+id/buttonSave"
             android:layout_width="100dp"
-            tools:text="设置" />
+            tools:text="设置并保存" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,5 +68,6 @@
             android:id="@+id/buttonStartService"
             tools:text="开启检测"
             android:layout_width="150dp" />
+
     </LinearLayout>
 </LinearLayout>
