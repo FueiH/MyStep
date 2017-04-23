@@ -69,5 +69,13 @@
             tools:text="开启检测"
             android:layout_width="150dp" />
 
+        <Button
+            android:text="发送短信测试"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/buttonSMSTest"
+            tools:text="发送短信测试"
+            android:layout_width="150dp" />
+
     </LinearLayout>
 </LinearLayout>

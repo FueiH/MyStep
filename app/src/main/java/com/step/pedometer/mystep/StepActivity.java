@@ -4,6 +4,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -16,6 +18,7 @@ import android.view.KeyEvent;
 import android.widget.TextView;
 
 import com.step.pedometer.mystep.config.Constant;
+import com.step.pedometer.mystep.service.StepDetector;
 import com.step.pedometer.mystep.service.StepService;
 
 import java.text.DecimalFormat;
@@ -180,16 +183,4 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
         textSpeed.setText(decimalFormat.format(this.speed) + "m/s");
         return;
     }
-/*
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == event.KEYCODE_BACK) {
-            Intent intent = new Intent(StepActivity.this, MainActivity.class);
-            startActivity(intent);
-            this.finish();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-*/
-
 }

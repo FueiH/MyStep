@@ -153,7 +153,7 @@ public class StepDetector implements SensorEventListener {
      */
     private void preStep(){
         if(CountTimeState==0){
-            //开启计时器(倒计时3.5秒,倒计时时间间隔为0.7秒)  是在3.5秒内每0.7面去监测一次。
+            //开启计时器(倒计时3.5秒,倒计时时间间隔为0.7秒)  是在3.5秒内每0.7秒去监测一次。
             time=new TimeCount(duration,700);
             time.start();
             CountTimeState=1;  //计时中
@@ -194,7 +194,7 @@ public class StepDetector implements SensorEventListener {
             continueUpCount=0;
             isDirectionUp=false;
         }
-        if(!isDirectionUp&&lastStatus&&(continueUpFormerCount>=2&&(oldValue>=minValue&&oldValue<maxValue))){
+        if(!isDirectionUp&&lastStatus&&(continueUpFormerCount>=2&&(oldValue>=minValue))){
             //满足上面波峰的四个条件，此时为波峰状态
             peakOfWave=oldValue;
             return true;

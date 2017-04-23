@@ -239,11 +239,11 @@ public class StepService extends Service implements SensorEventListener {
         sensorManager=(SensorManager)this.getSystemService(SENSOR_SERVICE);
         //android4.4以后可以使用计步传感器
         int VERSION_CODES = Build.VERSION.SDK_INT;
-        if(VERSION_CODES>=19){
-            addCountStepListener();
-        }else{
+//        if(VERSION_CODES>=19){
+//            addCountStepListener();
+//        }else{
             addBasePedoListener();
-        }
+//        }
     }
 
     /**
@@ -265,23 +265,23 @@ public class StepService extends Service implements SensorEventListener {
      * 不过上面的分析依然正确。不过当使用CURRENT_STEP++如果服务停掉计步就不准了。如果使用计步传感器中
      * 统计的数据减去之前的数据就是当天的数据了，这样每天走多少步就能准确的显示出来
      */
-    private void addCountStepListener(){
-        Sensor detectorSensor=sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        if(countSensor!=null){
-            stepSensor = 0;
-            Log.v(TAG, "countSensor 步数传感器");
-            sensorManager.registerListener(StepService.this,countSensor,SensorManager.SENSOR_DELAY_UI);
-        }else if(detectorSensor!=null){
-            stepSensor = 1;
-            Log.v("base", "detector");
-            sensorManager.registerListener(StepService.this,detectorSensor,SensorManager.SENSOR_DELAY_UI);
-        }else{
-            stepSensor = 2;
-            Log.e(TAG,"Count sensor not available! 没有可用的传感器，只能用加速传感器了");
-            addBasePedoListener();
-        }
-    }
+//    private void addCountStepListener(){
+//        Sensor detectorSensor=sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+//        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+//        if(countSensor!=null){
+//            stepSensor = 0;
+//            Log.v(TAG, "countSensor 步数传感器");
+//            sensorManager.registerListener(StepService.this,countSensor,SensorManager.SENSOR_DELAY_UI);
+//        }else if(detectorSensor!=null){
+//            stepSensor = 1;
+//            Log.v("base", "detector");
+//            sensorManager.registerListener(StepService.this,detectorSensor,SensorManager.SENSOR_DELAY_UI);
+//        }else{
+//            stepSensor = 2;
+//            Log.e(TAG,"Count sensor not available! 没有可用的传感器，只能用加速传感器了");
+//            addBasePedoListener();
+//        }
+//    }
 
 
     /**
@@ -293,7 +293,7 @@ public class StepService extends Service implements SensorEventListener {
         //获得传感器类型，这里获得的类型是加速度传感器
         //此方法用来注册，只有注册过才会生效，参数：SensorEventListener的实例，Sensor的实例，更新速率
         Sensor sensor=sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(stepDetector,sensor,SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(stepDetector,sensor,SensorManager.SENSOR_DELAY_FASTEST);
         stepDetector.setOnSensorChangeListener(new StepDetector.OnSensorChangeListener() {
             @Override
             public void onChange() {
