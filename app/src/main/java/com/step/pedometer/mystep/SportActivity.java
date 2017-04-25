@@ -1,6 +1,7 @@
 package com.step.pedometer.mystep;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -39,6 +40,11 @@ public class SportActivity extends Activity {
     private SensorManager sensorManager;
     private boolean success;
 
+    private void showDialog(String str) {
+        new AlertDialog.Builder(SportActivity.this).setTitle(str)
+                .setPositiveButton("确定", null).create().show();
+    }
+
 
     private void init() {
         minX = minY = minZ = 999999999;
@@ -55,7 +61,13 @@ public class SportActivity extends Activity {
             public void onClick(View v) {
                 if (flagFuwocheng) {
                     buttonFuwocheng.setText(Constant.START);
+                    flag = false;
                 } else {
+                    if (flag) {
+                        showDialog("已经在进行另一项运动");
+                        return;
+                    }
+                    flag = true;
                     buttonFuwocheng.setText(Constant.STOP);
                 }
                 flagFuwocheng = !flagFuwocheng;
@@ -65,8 +77,14 @@ public class SportActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (flagYangwoqizuo) {
+                    flag = false;
                     buttonYangwoqizuo.setText(Constant.START);
                 } else {
+                    if (flag) {
+                        showDialog("已经在进行另一项运动");
+                        return;
+                    }
+                    flag = true;
                     buttonYangwoqizuo.setText(Constant.STOP);
                 }
                 flagYangwoqizuo = !flagYangwoqizuo;
@@ -76,8 +94,14 @@ public class SportActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (flagYintixiangshang) {
+                    flag = false;
                     buttonYintixiangshang.setText(Constant.START);
                 } else {
+                    if (flag) {
+                        showDialog("已经在进行另一项运动");
+                        return;
+                    }
+                    flag = true;
                     buttonYintixiangshang.setText(Constant.STOP);
                 }
                 flagYintixiangshang = !flagYintixiangshang;

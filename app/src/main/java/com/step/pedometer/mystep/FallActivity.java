@@ -118,8 +118,7 @@ public class FallActivity extends AppCompatActivity implements Handler.Callback 
      * @param str  要提示的消息
      */
     public void showInfoDialog(String str) {
-        new AlertDialog.Builder(FallActivity.this)
-                .setTitle(str)
+        new AlertDialog.Builder(FallActivity.this).setTitle(str)
                 .setPositiveButton("确定", null).create().show();
     }
 
