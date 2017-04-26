@@ -12,4 +12,21 @@ public class Constant {
     public static final String DB_NAME="basepedo";
     public static final String START = "开始";
     public static final String STOP = "结束";
+    public static final String SHARED_NAME = "Fuei";
+    public static final String YANGWOQIZUO = "Yangwoqizuo";
+    public static final String FUWOCHENG = "Fuwocheng";
+    public static final String YINTIXIANGSHANG = "Yintixiangshang";
+    public static final String DATE = "date";
+    public static final float YANGWOQIZUO_MAX_THRESHOLD = 50;
+    public static final float YANGWOQIZUO_MIN_THRESHOLD = -50;
+    public static final float FUWOCHENG_MAX_THRESHOLD = 50;
+    public static final float FUWOCHENG_MIN_THRESHOLD = -50;
+    public static final float YINTIXIANGSHANG_MAX_THRESHOLD = 50;
+    public static final float YINTIXIANGSHANG_MIN_THRESHOLD = -50;
+    public static final long YANGWOQIZUO_MAX_TIME = 2000;
+    public static final long YANGWOQIZUO_MIN_TIME = 200;
+    public static final long FUWOCHENG_MAX_TIME = 2000;
+    public static final long FUWOCHENG_MIN_TIME = 200;
+    public static final long YINTIXIANGSHANG_MAX_TIME = 2000;
+    public static final long YINTIXIANGSHANG_MIN_TIME = 200;
 }

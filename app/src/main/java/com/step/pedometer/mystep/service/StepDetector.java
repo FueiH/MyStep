@@ -189,20 +189,20 @@ public class StepDetector implements SensorEventListener {
         if(newValue>=oldValue){
             isDirectionUp=true;
             continueUpCount++;
-        }else{
+        } else{
             continueUpFormerCount=continueUpCount;
             continueUpCount=0;
             isDirectionUp=false;
         }
-        if(!isDirectionUp&&lastStatus&&(continueUpFormerCount>=2&&(oldValue>=minValue))){
+        if (!isDirectionUp&&lastStatus&&(continueUpFormerCount>=2&&(oldValue>=minValue))){
             //满足上面波峰的四个条件，此时为波峰状态
             peakOfWave=oldValue;
             return true;
-        }else if(!lastStatus&&isDirectionUp){
+        } else if(!lastStatus&&isDirectionUp){
             //满足波谷条件，此时为波谷状态
             valleyOfWave=oldValue;
             return false;
-        }else{
+        } else {
             return false;
         }
     }
