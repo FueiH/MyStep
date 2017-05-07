@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.step.pedometer.mystep.config.Constant;
+import com.step.pedometer.mystep.utils.CalPullUp;
+import com.step.pedometer.mystep.utils.CalPushUp;
+import com.step.pedometer.mystep.utils.CalSitup;
 
 import org.w3c.dom.Text;
 
@@ -50,6 +53,9 @@ public class SportActivity extends Activity {
     private SensorManager sensorManager;
     private boolean success;
     private SharedPreferences sharedPreferences;
+    private CalSitup calSitup;
+    private CalPullUp calPullUp;
+    private CalPushUp calPushUp;
 
     private void showDialog(String str) {
         new AlertDialog.Builder(SportActivity.this).setTitle(str)
@@ -105,7 +111,7 @@ public class SportActivity extends Activity {
                         showDialog("已经在进行另一项运动");
                         return;
                     }
-                    initSensorData();
+                    calPushUp = new CalPushUp();
                     flag = true;
                     buttonFuwocheng.setText(Constant.STOP);
                 }
@@ -123,7 +129,7 @@ public class SportActivity extends Activity {
                         showDialog("已经在进行另一项运动");
                         return;
                     }
-                    initSensorData();
+                    calSitup = new CalSitup();
                     flag = true;
                     buttonYangwoqizuo.setText(Constant.STOP);
                 }
@@ -141,7 +147,7 @@ public class SportActivity extends Activity {
                         showDialog("已经在进行另一项运动");
                         return;
                     }
-                    initSensorData();
+                    calPullUp = new CalPullUp();
                     flag = true;
                     buttonYintixiangshang.setText(Constant.STOP);
                 }
@@ -196,20 +202,18 @@ public class SportActivity extends Activity {
             float x = event.values[SensorManager.DATA_X];
             float y = event.values[SensorManager.DATA_Y];
             float z = event.values[SensorManager.DATA_Z];
-            average = (float) Math.sqrt(Math.pow(x, 2)
+            float average = (float) Math.sqrt(Math.pow(x, 2)
                     +Math.pow(y, 2)+Math.pow(z, 2));
             if (flagYangwoqizuo) {
                 //仰卧起坐
-                calSportNum(average, Constant.YANGWOQIZUO_MAX_TIME, Constant.YANGWOQIZUO_MIN_TIME,
-                        Constant.YANGWOQIZUO_MIN_THRESHOLD, Constant.YANGWOQIZUO_MAX_THRESHOLD, numYangwoqizuo);
+                calSitup.calSportNum(y);
+                setSportNum(textViewYangwoqizuo, "仰卧起坐:", calSitup.sportNum);
             } else if (flagFuwocheng) {
                 //俯卧撑
-                calSportNum(average, Constant.FUWOCHENG_MAX_TIME, Constant.FUWOCHENG_MIN_TIME,
-                        Constant.FUWOCHENG_MIN_THRESHOLD, Constant.FUWOCHENG_MAX_THRESHOLD, numFuwocheng);
+//                calPushUp;
             } else {
                 //引体向上
-                calSportNum(average, Constant.YINTIXIANGSHANG_MAX_TIME, Constant.YINTIXIANGSHANG_MIN_TIME,
-                        Constant.YINTIXIANGSHANG_MIN_THRESHOLD, Constant.YINTIXIANGSHANG_MAX_THRESHOLD, numYintixiangshang);
+//                calPullUp
             }
             minX = min(minX, x);maxX = max(maxX, x);
             minY = min(minY, y);maxY = max(maxY, y);
@@ -225,77 +229,15 @@ public class SportActivity extends Activity {
     };
 
 
-    private long timeOfLastPeak = 0; //上一次波峰的时间
-    private long timeOfLastValley = 0; //上一次波谷的时间
-    private static float average = 0; //x,y,z三轴加速度的平均值
-    private float gravityOld = 0; //上次传感器的值
-    private float peakOfWave = 0; //波峰值，如果大于阈值则确认是摔倒
-    private float valleyOfWave = 0; //波谷值,预留用
-    private boolean lastStatus = false;  //上一个点的状态，上升or下降
-    private boolean isDirectionUp = false; //是否上升的标志位
-    private int continueUpCount = 0; //持续上升的次数
-    private int continueUpFormerCount = 0; //上一点的持续上升次数，为了记录波峰的上升次数
 
-    private void initSensorData() {
-        average = 0;
-        gravityOld = 0;
-        peakOfWave = 0;
-        valleyOfWave = 0;
-        lastStatus = false;
-        isDirectionUp = false;
-        continueUpCount = 0;
-        continueUpFormerCount = 0;
-    }
 
-    private void calSportNum(float values, long maxTime, long minTime, float minValue, float maxValue, int sportNum) {
-        if (gravityOld == 0) {
-            gravityOld = values;
-        } else {
-            if (DetectorPeakOrValley(values, gravityOld, minValue, maxValue)) {
-                sportNum++;
-            }
-        }
-    }
 
-    /**
-     * 监测波峰
-     * 以下四个条件判断为波峰
-     * 1.目前点为下降的趋势：isDirectionUp为false
-     * 2.之前的点为上升的趋势：lastStatus为true
-     * 3.到波峰为止，持续上升大于等于2次
-     * 4.波峰值大于当前运动最小加速度阈值，小于当前运动最大加速度阈值
-     * 记录波谷值
-     * 1.观察波形图，可以发现在出现步子的地方，波谷的下一个就是波峰，有比较明显的特征以及差值
-     * 2.所以要记录每次的波谷值，为了和下次的波峰作对比
-     * @param newValue
-     * @param oldValue
-     * @return
-     */
-    public boolean DetectorPeakOrValley(float newValue, float oldValue, float minValue, float maxValue) {
-        lastStatus = isDirectionUp;
-        if (newValue >= oldValue) {
-            isDirectionUp = true;
-            continueUpCount++;
-        } else {
-            continueUpFormerCount = continueUpCount;
-            continueUpCount = 0;
-            isDirectionUp = false;
-        }
-        if (!isDirectionUp && lastStatus &&
-                (continueUpFormerCount >= 2 && oldValue >= minValue && oldValue <= maxValue)) {
-            //此时为波峰
-            peakOfWave = oldValue;
-            timeOfLastPeak = System.currentTimeMillis();
-            return true;
-        } else if (!lastStatus && isDirectionUp) {
-            //此时为波谷
-            valleyOfWave = oldValue;
-            timeOfLastValley = System.currentTimeMillis();
-            return true;
-        } else {
-            return false;
-        }
-    }
+
+
+
+
+
+
 
 
 }
