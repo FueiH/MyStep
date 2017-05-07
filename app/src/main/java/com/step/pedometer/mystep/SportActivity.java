@@ -201,15 +201,15 @@ public class SportActivity extends Activity {
             if (flagYangwoqizuo) {
                 //仰卧起坐
                 calSportNum(average, Constant.YANGWOQIZUO_MAX_TIME, Constant.YANGWOQIZUO_MIN_TIME,
-                        Constant.YANGWOQIZUO_MIN_THRESHOLD, Constant.YANGWOQIZUO_MAX_THRESHOLD);
+                        Constant.YANGWOQIZUO_MIN_THRESHOLD, Constant.YANGWOQIZUO_MAX_THRESHOLD, numYangwoqizuo);
             } else if (flagFuwocheng) {
                 //俯卧撑
                 calSportNum(average, Constant.FUWOCHENG_MAX_TIME, Constant.FUWOCHENG_MIN_TIME,
-                        Constant.FUWOCHENG_MIN_THRESHOLD, Constant.FUWOCHENG_MAX_THRESHOLD);
+                        Constant.FUWOCHENG_MIN_THRESHOLD, Constant.FUWOCHENG_MAX_THRESHOLD, numFuwocheng);
             } else {
                 //引体向上
                 calSportNum(average, Constant.YINTIXIANGSHANG_MAX_TIME, Constant.YINTIXIANGSHANG_MIN_TIME,
-                        Constant.YINTIXIANGSHANG_MIN_THRESHOLD, Constant.YINTIXIANGSHANG_MAX_THRESHOLD);
+                        Constant.YINTIXIANGSHANG_MIN_THRESHOLD, Constant.YINTIXIANGSHANG_MAX_THRESHOLD, numYintixiangshang);
             }
             minX = min(minX, x);maxX = max(maxX, x);
             minY = min(minY, y);maxY = max(maxY, y);
@@ -224,6 +224,9 @@ public class SportActivity extends Activity {
         public void onAccuracyChanged(Sensor sensor, int accuracy) {}
     };
 
+
+    private long timeOfLastPeak = 0; //上一次波峰的时间
+    private long timeOfLastValley = 0; //上一次波谷的时间
     private static float average = 0; //x,y,z三轴加速度的平均值
     private float gravityOld = 0; //上次传感器的值
     private float peakOfWave = 0; //波峰值，如果大于阈值则确认是摔倒
@@ -244,12 +247,12 @@ public class SportActivity extends Activity {
         continueUpFormerCount = 0;
     }
 
-    private void calSportNum(float values, long maxTime, long minTime, float minValue, float maxValue) {
+    private void calSportNum(float values, long maxTime, long minTime, float minValue, float maxValue, int sportNum) {
         if (gravityOld == 0) {
             gravityOld = values;
         } else {
-            if (DetectorPeak(values, gravityOld, minValue, ,maxValue)) {
-
+            if (DetectorPeakOrValley(values, gravityOld, minValue, maxValue)) {
+                sportNum++;
             }
         }
     }
@@ -268,7 +271,7 @@ public class SportActivity extends Activity {
      * @param oldValue
      * @return
      */
-    public boolean DetectorPeak(float newValue, float oldValue, float minValue, float maxValue) {
+    public boolean DetectorPeakOrValley(float newValue, float oldValue, float minValue, float maxValue) {
         lastStatus = isDirectionUp;
         if (newValue >= oldValue) {
             isDirectionUp = true;
@@ -282,11 +285,13 @@ public class SportActivity extends Activity {
                 (continueUpFormerCount >= 2 && oldValue >= minValue && oldValue <= maxValue)) {
             //此时为波峰
             peakOfWave = oldValue;
+            timeOfLastPeak = System.currentTimeMillis();
             return true;
         } else if (!lastStatus && isDirectionUp) {
             //此时为波谷
             valleyOfWave = oldValue;
-            return false;
+            timeOfLastValley = System.currentTimeMillis();
+            return true;
         } else {
             return false;
         }
