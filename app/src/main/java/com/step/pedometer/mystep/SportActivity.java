@@ -210,7 +210,8 @@ public class SportActivity extends Activity {
                 setSportNum(textViewYangwoqizuo, "仰卧起坐:", calSitup.sportNum);
             } else if (flagFuwocheng) {
                 //俯卧撑
-//                calPushUp;
+                calPushUp.calSportNum(z);
+                setSportNum(textViewFuwocheng, "俯卧撑:", calPushUp.sportNum);
             } else {
                 //引体向上
 //                calPullUp
