@@ -61,20 +61,20 @@
         android:layout_width="match_parent"
         android:layout_height="117dp">
 
-        <Button
-            android:text="开启检测"
+        <TextView
+            android:text="设置并保存手机号后才可启动服务"
+            android:gravity="center"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:id="@+id/buttonStartService"
-            tools:text="开启检测"
-            android:layout_width="150dp" />
+            android:id="@+id/textViewHint"
+            android:textSize="24sp" />
 
         <Button
-            android:text="发送短信测试"
+            android:text="测试发送短信"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:id="@+id/buttonSMSTest"
-            tools:text="发送短信测试"
+            tools:text="测试发送短信"
             android:layout_width="150dp" />
 
     </LinearLayout>

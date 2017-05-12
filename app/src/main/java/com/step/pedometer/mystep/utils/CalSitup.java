@@ -63,6 +63,7 @@ public class CalSitup extends BaseSport {
         } else {
             DetectorPeakOrValley(y, gravityOld);
         }
+        gravityOld = y;
     }
 
     /**
