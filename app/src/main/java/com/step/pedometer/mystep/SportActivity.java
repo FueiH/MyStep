@@ -82,8 +82,14 @@ public class SportActivity extends Activity {
             numYintixiangshang = sharedPreferences.getInt(Constant.YINTIXIANGSHANG, 0);
         }
         setSportNum(textViewFuwocheng, "俯卧撑:", numFuwocheng);
-        setSportNum(textViewYintixiangshang, "引体向上:", numYintixiangshang);
+        setSportNum(textViewYintixiangshang, "不标准引体向上:", numYintixiangshang);
         setSportNum(textViewYangwoqizuo, "仰卧起坐:", numYangwoqizuo);
+    }
+
+    private void hide() {
+        textViewGravityX.setVisibility(View.GONE);
+        textViewGravityY.setVisibility(View.GONE);
+        textViewGravityZ.setVisibility(View.GONE);
     }
 
     private void init() {
@@ -98,6 +104,7 @@ public class SportActivity extends Activity {
         textViewGravityX = (TextView) findViewById(R.id.textViewGravityX);
         textViewGravityY = (TextView) findViewById(R.id.textViewGravityY);
         textViewGravityZ = (TextView) findViewById(R.id.textViewGravityZ);
+        hide();
         initData();
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         buttonFuwocheng.setOnClickListener(new View.OnClickListener() {
@@ -212,16 +219,17 @@ public class SportActivity extends Activity {
                 //俯卧撑
                 calPushUp.calSportNum(z);
                 setSportNum(textViewFuwocheng, "俯卧撑:", calPushUp.sportNum);
-            } else {
+            } else if (flagYintixiangshang){
                 //引体向上
-//                calPullUp
+                calPullUp.calSportNum(average);
+                setSportNum(textViewYintixiangshang, "不标准引体向上:", calPullUp.sportNum);
             }
-            minX = min(minX, x);maxX = max(maxX, x);
-            minY = min(minY, y);maxY = max(maxY, y);
-            minZ = min(minZ, z);maxZ = max(maxZ, z);
-            textViewGravityX.setText("x:" + x + " max:" + maxX + "min:" + minX);
-            textViewGravityY.setText("y:" + y + " max:" + maxY + "min:" + minY);
-            textViewGravityZ.setText("z:" + z + " max:" + maxZ + "min:" + minZ);
+//            minX = min(minX, x);maxX = max(maxX, x);
+//            minY = min(minY, y);maxY = max(maxY, y);
+//            minZ = min(minZ, z);maxZ = max(maxZ, z);
+//            textViewGravityX.setText("x:" + x + " max:" + maxX + "min:" + minX);
+//            textViewGravityY.setText("y:" + y + " max:" + maxY + "min:" + minY);
+//            textViewGravityZ.setText("z:" + z + " max:" + maxZ + "min:" + minZ);
 
         }
 

@@ -44,7 +44,6 @@ public class FallActivity extends AppCompatActivity implements Handler.Callback 
     private static final String PHONENUMBER = "phoneNumber";
     private Button buttonSave;
     private boolean granted;
-    private Button buttonStartService;
     private Button buttonSMSTest;
     private EditText editText;
     private SharedPreferences sharedPreferences;
@@ -52,6 +51,7 @@ public class FallActivity extends AppCompatActivity implements Handler.Callback 
     private Messenger messenger;
     private Messenger mGetReplyMessenger = new Messenger(new Handler(this));
     private Handler delayHandler;
+    private boolean isFreeSMS;
 
     //以bind形式开启service,故有ServiceConnection接受回调
     ServiceConnection connection = new ServiceConnection() {
@@ -78,7 +78,17 @@ public class FallActivity extends AppCompatActivity implements Handler.Callback 
                 //查看是否有跌倒的数据,若有则发送短信
                 boolean isFall = msg.getData().getBoolean("isFall");
                 if (isFall) {
-                   showInfoDialog("检测到摔倒");
+                    String phoneNumber = getPhonenumber();
+                    if (phoneNumber != DEFAULTSTRING) {
+                        if (isFreeSMS) {
+                            send("102","10001");//电信查话费短信，无需短信费
+                        } else {
+                            send(FALL_MESSAGE, phoneNumber);
+                        }
+                        showInfoDialog("检测到摔倒");
+                    } else {
+                        showInfoDialog("检测到摔倒，请先设置手机号以保证接受信息正常");
+                    }
                 }
                 delayHandler.sendEmptyMessageDelayed(Constant.REQUEST_SERVER, TIME_INTERVAL);
                 break;
@@ -122,6 +132,12 @@ public class FallActivity extends AppCompatActivity implements Handler.Callback 
                 .setPositiveButton("确定", null).create().show();
     }
 
+    private String getPhonenumber() {
+        sharedPreferences = getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        final String phoneNumber = sharedPreferences.getString(PHONENUMBER, DEFAULTSTRING);
+        return phoneNumber;
+    }
+
     /**
      * 初始化按钮和读入手机号码等信息
      */
@@ -131,7 +147,8 @@ public class FallActivity extends AppCompatActivity implements Handler.Callback 
         editText = (EditText) findViewById(R.id.editTextPhone);
         sharedPreferences = getSharedPreferences(NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        final String phoneNumber = sharedPreferences.getString(PHONENUMBER, DEFAULTSTRING);
+        isFreeSMS = true;
+        final String phoneNumber = getPhonenumber();
         if (phoneNumber == DEFAULTSTRING) {
 
         } else {
@@ -153,10 +170,14 @@ public class FallActivity extends AppCompatActivity implements Handler.Callback 
         buttonSMSTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                send("102","10001");//电信查话费短信，无需短信费
+                if (isFreeSMS) {
+                    buttonSMSTest.setText("正式发送短信");
+                } else {
+                    buttonSMSTest.setText("测试发送短信");
+                }
+                isFreeSMS = !isFreeSMS;
             }
-        });//测试发送手机短信
-//        send(MESSAGE,phoneNumber);
+        });//设置当前的短信是不是付费，如果免费则发送短信给电信查话费
     }
 
     @Override
