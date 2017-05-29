@@ -25,9 +25,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
-import com.step.pedometer.mystep.MainActivity;
+import com.step.pedometer.mystep.activity.MainActivity;
 import com.step.pedometer.mystep.R;
 import com.step.pedometer.mystep.config.Constant;
+import com.step.pedometer.mystep.detector.StepDetector;
 import com.step.pedometer.mystep.pojo.StepData;
 import com.step.pedometer.mystep.utils.CountDownTimer;
 import com.step.pedometer.mystep.utils.DbUtils;

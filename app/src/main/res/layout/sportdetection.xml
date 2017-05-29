@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:background="@drawable/gray"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     android:orientation="vertical">
 
     <LinearLayout
@@ -68,8 +69,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/textViewYintixiangshang"
             android:textSize="30sp"
-            tools:text="不标准引体向上：0个"
-            android:text="不标准引体向上：0个" />
+            android:text="引体向上：0个"
+            tools:text="引体向上：0个" />
 
         <Button
             android:text="开始"

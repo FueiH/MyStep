@@ -1,7 +1,6 @@
 package com.step.pedometer.mystep.service;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -19,8 +18,8 @@ import android.os.PowerManager;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 
-import com.step.pedometer.mystep.FallActivity;
 import com.step.pedometer.mystep.config.Constant;
+import com.step.pedometer.mystep.detector.FallDetector;
 
 import java.util.Calendar;
 

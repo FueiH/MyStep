@@ -1,4 +1,4 @@
-package com.step.pedometer.mystep;
+package com.step.pedometer.mystep.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,12 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.step.pedometer.mystep.R;
 import com.step.pedometer.mystep.config.Constant;
-import com.step.pedometer.mystep.utils.CalPullUp;
-import com.step.pedometer.mystep.utils.CalPushUp;
-import com.step.pedometer.mystep.utils.CalSitup;
-
-import org.w3c.dom.Text;
+import com.step.pedometer.mystep.detector.CalPullUp;
+import com.step.pedometer.mystep.detector.CalPushUp;
+import com.step.pedometer.mystep.detector.CalSitup;
 
 import java.util.Calendar;
 
@@ -82,7 +81,7 @@ public class SportActivity extends Activity {
             numYintixiangshang = sharedPreferences.getInt(Constant.YINTIXIANGSHANG, 0);
         }
         setSportNum(textViewFuwocheng, "俯卧撑:", numFuwocheng);
-        setSportNum(textViewYintixiangshang, "不标准引体向上:", numYintixiangshang);
+        setSportNum(textViewYintixiangshang, "引体向上:", numYintixiangshang);
         setSportNum(textViewYangwoqizuo, "仰卧起坐:", numYangwoqizuo);
     }
 
@@ -222,7 +221,7 @@ public class SportActivity extends Activity {
             } else if (flagYintixiangshang){
                 //引体向上
                 calPullUp.calSportNum(average);
-                setSportNum(textViewYintixiangshang, "不标准引体向上:", calPullUp.sportNum);
+                setSportNum(textViewYintixiangshang, "引体向上:", calPullUp.sportNum);
             }
 //            minX = min(minX, x);maxX = max(maxX, x);
 //            minY = min(minY, y);maxY = max(maxY, y);

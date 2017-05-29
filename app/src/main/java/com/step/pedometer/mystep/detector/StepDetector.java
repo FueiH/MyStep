@@ -1,4 +1,4 @@
-package com.step.pedometer.mystep.service;
+package com.step.pedometer.mystep.detector;
 
 import android.content.Context;
 import android.hardware.Sensor;
