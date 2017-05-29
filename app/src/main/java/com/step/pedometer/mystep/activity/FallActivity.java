@@ -1,4 +1,4 @@
-package com.step.pedometer.mystep;
+package com.step.pedometer.mystep.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -24,8 +24,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.step.pedometer.mystep.R;
 import com.step.pedometer.mystep.config.Constant;
-import com.step.pedometer.mystep.service.FallDetector;
 import com.step.pedometer.mystep.service.FallService;
 
 import java.util.ArrayList;

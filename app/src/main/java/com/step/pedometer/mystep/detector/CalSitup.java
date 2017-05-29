@@ -1,4 +1,6 @@
-package com.step.pedometer.mystep.utils;
+package com.step.pedometer.mystep.detector;
+
+import com.step.pedometer.mystep.detector.BaseSport;
 
 /**
  * 计算仰卧起坐个数的类

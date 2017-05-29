@@ -1,24 +1,20 @@
-package com.step.pedometer.mystep;
+package com.step.pedometer.mystep.activity;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.support.v4.view.KeyEventCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.widget.TextView;
 
+import com.step.pedometer.mystep.R;
 import com.step.pedometer.mystep.config.Constant;
-import com.step.pedometer.mystep.service.StepDetector;
 import com.step.pedometer.mystep.service.StepService;
 
 import java.text.DecimalFormat;

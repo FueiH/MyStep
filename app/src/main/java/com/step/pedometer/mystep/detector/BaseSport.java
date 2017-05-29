@@ -1,4 +1,4 @@
-package com.step.pedometer.mystep.utils;
+package com.step.pedometer.mystep.detector;
 
 /**
  * Created by Administrator on 2017/5/7 0007.
