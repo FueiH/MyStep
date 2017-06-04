@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -43,6 +44,11 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
     private Messenger messenger;
     private Messenger mGetReplyMessenger = new Messenger(new Handler(this));
     private Handler delayHandler;
+
+    //用于保存当日的步数
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private int todayStepNum;
 
     //以bind形式开启service，故有ServiceConnection接收回调
     ServiceConnection conn = new ServiceConnection() {
@@ -84,6 +90,7 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
     }
 
     public void updateData(int param) {
+        todayStepNum = param;
         textStepNum.setText(param + "步");
         Step2Energy(param);
         Step2Distance(param);
@@ -100,6 +107,7 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
         textSpeed = (TextView) findViewById(R.id.textViewSpeed1);
         textStatus = (TextView) findViewById(R.id.textViewStatus1);
         previousStepNum = -1;
+        todayStepNum = 0;
         setSpeed(-1);
         setStatus(this.speed);
     }
@@ -132,9 +140,17 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
         super.onBackPressed();
     }
 
+    private void saveStep() {
+        sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_STEP_NUM_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putInt(Constant.TODAY_STEP_NUM, todayStepNum);
+        editor.commit();
+    }
+
     @Override
     protected void onDestroy() {
         //取消服务绑定
+        saveStep();
         unbindService(conn);
         super.onDestroy();
     }
