@@ -1,6 +1,7 @@
 package com.step.pedometer.mystep.activity;
 
 import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -19,6 +20,7 @@ import com.step.pedometer.mystep.config.Constant;
 import com.step.pedometer.mystep.service.StepService;
 
 import java.text.DecimalFormat;
+import java.util.Calendar;
 
 /**
  * Created by Administrator on 2017/4/18 0018.
@@ -91,7 +93,6 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
 
     public void updateData(int param) {
         todayStepNum = param;
-        saveStep();
         textStepNum.setText(param + "步");
         Step2Energy(param);
         Step2Distance(param);
@@ -148,7 +149,10 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
     private int getTodayStepNum() {
         sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_STEP_NUM_NAME, Context.MODE_PRIVATE);
         int num = sharedPreferences.getInt(Constant.TODAY_STEP_NUM, Constant.TODAY_STEP_NUM_DEFAULT);
-        return num;
+        sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_DATE_NAME, Context.MODE_PRIVATE);
+        String previousDate = sharedPreferences.getString(Constant.DATE_STEP, Constant.DEFAULT_DATE);
+        String currentDate = getTodayDate();
+        return (previousDate.equals(Constant.DEFAULT_DATE) || !previousDate.equals(currentDate)) ? 0 : num;
     }
 
     /**
@@ -159,12 +163,11 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
         editor = sharedPreferences.edit();
         editor.putInt(Constant.TODAY_STEP_NUM, todayStepNum);
         editor.commit();
-    }
-
-    @Override
-    protected void onStop() {
-        saveStep();
-        super.onStop();
+        sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_DATE_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        String currentDate = getTodayDate();
+        editor.putString(Constant.DATE_STEP, currentDate);
+        editor.commit();
     }
 
     @Override
@@ -212,5 +215,16 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
             previousTime = currentTime;
         }
         textSpeed.setText(decimalFormat.format(this.speed) + "m/s");
+    }
+
+    /**
+     * 获得当前日期
+     */
+    private String getTodayDate() {
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        return year + "-" + month + "-" + day;
     }
 }

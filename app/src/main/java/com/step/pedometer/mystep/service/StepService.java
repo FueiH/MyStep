@@ -102,6 +102,42 @@ public class StepService extends Service implements SensorEventListener {
     private void getTodayStepNum() {
         sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_STEP_NUM_NAME, Context.MODE_PRIVATE);
         todayStepNum = sharedPreferences.getInt(Constant.TODAY_STEP_NUM, Constant.TODAY_STEP_NUM_DEFAULT);
+        sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_DATE_NAME, Context.MODE_PRIVATE);
+        String previousDate = sharedPreferences.getString(Constant.DATE_STEP, Constant.DEFAULT_DATE);
+        String currentDate = getDate();
+        if (previousDate.equals(Constant.DEFAULT_DATE) || !previousDate.equals(currentDate)) {
+            todayStepNum = 0;
+            sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_DATE_NAME, Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            editor.putString(Constant.DATE_STEP, currentDate);
+            editor.commit();
+        }
+    }
+
+    /**
+     * 在SharedPreference中保存当天的步数
+     */
+    private void saveStep() {
+        sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_STEP_NUM_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putInt(Constant.TODAY_STEP_NUM, StepDetector.CURRENT_STEP);
+        editor.commit();
+        sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_DATE_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        String currentDate = getDate();
+        editor.putString(Constant.DATE_STEP, currentDate);
+        editor.commit();
+    }
+
+    /**
+     * 获得当前日期
+     */
+    private String getDate() {
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        return year + "-" + month + "-" + day;
     }
 
     @Override
@@ -123,40 +159,8 @@ public class StepService extends Service implements SensorEventListener {
     public int onStartCommand(Intent intent, int flags, int startId){
         getTodayStepNum();
         StepDetector.CURRENT_STEP = todayStepNum;
-    //    initTodayData();
         updateNotification("今日步数:"+StepDetector.CURRENT_STEP+" 步");
         return START_STICKY;
-    }
-    /**
-     * 获得今天的日期
-     */
-    private String getTodayDate(){
-        Date date=new Date(System.currentTimeMillis());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(date);
-    }
-
-    /**
-     * 初始化当天的日期
-     */
-    private void initTodayData(){
-        CURRENTDATE=getTodayDate();
-        //在创建方法中有判断，如果数据库已经创建了不会二次创建的
-        DbUtils.createDb(this,Constant.DB_NAME);
-
-        //获取当天的数据
-        List<StepData> list=DbUtils.getQueryByWhere(StepData.class,"today",new String[]{CURRENTDATE});
-        if(list.size()==0||list.isEmpty()){
-            //如果获取当天数据为空，则步数为0
-            StepDetector.CURRENT_STEP=0;
-            isNewDay=true;  //用于判断是否存储之前的数据，后面会用到
-        }else if(list.size()==1){
-            isNewDay=false;
-            //如果数据库中存在当天的数据那么获取数据库中的步数
-            StepDetector.CURRENT_STEP=Integer.parseInt(list.get(0).getStep());
-        }else{
-            Log.e(TAG, "出错了！");
-        }
     }
 
     /**
@@ -438,14 +442,6 @@ public class StepService extends Service implements SensorEventListener {
             save();
             startTimeCount();
         }
-    }
-
-    //保存当日步数
-    private void saveStep() {
-        sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_STEP_NUM_NAME, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.putInt(Constant.TODAY_STEP_NUM, StepDetector.CURRENT_STEP);
-        editor.commit();
     }
 
 }

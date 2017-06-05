@@ -31,10 +31,15 @@ public class Constant {
     public static final long YINTIXIANGSHANG_MAX_TIME = 2000;
     public static final long YINTIXIANGSHANG_MIN_TIME = 200;
 
-    //
-    public static final String SHAREDPREFERENCE_STEP_NUM_NAME = "TodayStepNum";
+    //从sharedPreference中存取当日步数相关
+    public static final String SHAREDPREFERENCE_STEP_NUM_NAME = "Name_TodayStepNum";
     public static final String TODAY_STEP_NUM = "TodayStepNum";
     public static final int TODAY_STEP_NUM_DEFAULT= 0;
+
+    //检验当前日期相关
+    public static final String SHAREDPREFERENCE_DATE_NAME = "Name_Date";
+    public static final String DATE_STEP = "Date_Step";
+    public static final String DEFAULT_DATE = "0000-00-00";
 
 
 }
