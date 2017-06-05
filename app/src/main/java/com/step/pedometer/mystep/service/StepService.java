@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -44,6 +45,7 @@ import java.util.List;
  */
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class StepService extends Service implements SensorEventListener {
+
     private final String TAG="TAG_StepService";   //"StepService";
     //默认为30秒进行一次存储
     private static int duration=30000;
@@ -65,6 +67,11 @@ public class StepService extends Service implements SensorEventListener {
     //用于计步传感器
     private int previousStep;    //用于记录之前的步数
     private boolean isNewDay=false;    //用于判断是否是新的一天，如果是新的一天则将之前的步数赋值给previousStep
+
+    //用于读取当天的步数
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private int todayStepNum;
 
     private static class MessengerHandler extends Handler {
         @Override
@@ -89,11 +96,20 @@ public class StepService extends Service implements SensorEventListener {
         }
     }
 
+    /**
+     * 从SharedPreference中获得当天的步数
+      */
+    private void getTodayStepNum() {
+        sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_STEP_NUM_NAME, Context.MODE_PRIVATE);
+        todayStepNum = sharedPreferences.getInt(Constant.TODAY_STEP_NUM, Constant.TODAY_STEP_NUM_DEFAULT);
+    }
+
     @Override
     public void onCreate(){
         super.onCreate();
         //初始化广播
         initBroadcastReceiver();
+        getTodayStepNum();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -105,7 +121,9 @@ public class StepService extends Service implements SensorEventListener {
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        initTodayData();
+        getTodayStepNum();
+        StepDetector.CURRENT_STEP = todayStepNum;
+    //    initTodayData();
         updateNotification("今日步数:"+StepDetector.CURRENT_STEP+" 步");
         return START_STICKY;
     }
@@ -188,7 +206,7 @@ public class StepService extends Service implements SensorEventListener {
                     save();
                 }else if(Intent.ACTION_TIME_CHANGED.equals(intent.getAction())){
                     Log.v(TAG,"receive ACTION_TIME_CHANGED");
-                    initTodayData();
+//                    initTodayData();
                 }
             }
         };
@@ -241,7 +259,7 @@ public class StepService extends Service implements SensorEventListener {
         //android4.4以后可以使用计步传感器
         int VERSION_CODES = Build.VERSION.SDK_INT;
 //        if(VERSION_CODES>=19){
-//            addCountStepListener();
+//            addCountStepListener();  使用系统自带的计步算法
 //        }else{
             addBasePedoListener();
 //        }
@@ -291,6 +309,7 @@ public class StepService extends Service implements SensorEventListener {
     private void addBasePedoListener(){
         //只有在使用加速传感器的时候才会调用StepDetector这个类
         stepDetector =new StepDetector(this);
+        stepDetector.CURRENT_STEP = todayStepNum;
         //获得传感器类型，这里获得的类型是加速度传感器
         //此方法用来注册，只有注册过才会生效，参数：SensorEventListener的实例，Sensor的实例，更新速率
         Sensor sensor=sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -298,6 +317,7 @@ public class StepService extends Service implements SensorEventListener {
         stepDetector.setOnSensorChangeListener(new StepDetector.OnSensorChangeListener() {
             @Override
             public void onChange() {
+                saveStep();
                 updateNotification("今日步数:"+StepDetector.CURRENT_STEP+" 步");
             }
         });
@@ -420,5 +440,12 @@ public class StepService extends Service implements SensorEventListener {
         }
     }
 
+    //保存当日步数
+    private void saveStep() {
+        sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_STEP_NUM_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putInt(Constant.TODAY_STEP_NUM, StepDetector.CURRENT_STEP);
+        editor.commit();
+    }
 
 }

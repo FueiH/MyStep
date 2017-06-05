@@ -5,7 +5,6 @@ package com.step.pedometer.mystep.config;
  */
 
 public class Constant {
-    //用于发送消息
     public static final int MSG_FROM_CLIENT=0;
     public static final int MSG_FROM_SERVER=1;
     public static final int REQUEST_SERVER=2;
@@ -17,6 +16,8 @@ public class Constant {
     public static final String FUWOCHENG = "Fuwocheng";
     public static final String YINTIXIANGSHANG = "Yintixiangshang";
     public static final String DATE = "date";
+
+    //检测算法阈值常量
     public static final float YANGWOQIZUO_MAX_THRESHOLD = 50;
     public static final float YANGWOQIZUO_MIN_THRESHOLD = -50;
     public static final float FUWOCHENG_MAX_THRESHOLD = 50;
@@ -29,4 +30,11 @@ public class Constant {
     public static final long FUWOCHENG_MIN_TIME = 200;
     public static final long YINTIXIANGSHANG_MAX_TIME = 2000;
     public static final long YINTIXIANGSHANG_MIN_TIME = 200;
+
+    //
+    public static final String SHAREDPREFERENCE_STEP_NUM_NAME = "TodayStepNum";
+    public static final String TODAY_STEP_NUM = "TodayStepNum";
+    public static final int TODAY_STEP_NUM_DEFAULT= 0;
+
+
 }

@@ -146,7 +146,6 @@ public class FallActivity extends AppCompatActivity implements Handler.Callback 
         buttonSMSTest = (Button) findViewById(R.id.buttonSMSTest);
         editText = (EditText) findViewById(R.id.editTextPhone);
         sharedPreferences = getSharedPreferences(NAME, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
         isFreeSMS = true;
         final String phoneNumber = getPhonenumber();
         if (phoneNumber == DEFAULTSTRING) {
@@ -159,6 +158,7 @@ public class FallActivity extends AppCompatActivity implements Handler.Callback 
             public void onClick(View v) {
                 String phoneNumber = editText.getText().toString();
                 if (phoneNumber != null && availableNumber(phoneNumber)) {
+                    editor = sharedPreferences.edit();
                     editor.putString(PHONENUMBER, phoneNumber);
                     editor.commit();
                     showInfoDialog("已经保存当前号码");
