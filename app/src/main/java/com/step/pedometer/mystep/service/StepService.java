@@ -121,7 +121,9 @@ public class StepService extends Service implements SensorEventListener {
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        initTodayData();
+        getTodayStepNum();
+        StepDetector.CURRENT_STEP = todayStepNum;
+    //    initTodayData();
         updateNotification("今日步数:"+StepDetector.CURRENT_STEP+" 步");
         return START_STICKY;
     }
@@ -204,7 +206,7 @@ public class StepService extends Service implements SensorEventListener {
                     save();
                 }else if(Intent.ACTION_TIME_CHANGED.equals(intent.getAction())){
                     Log.v(TAG,"receive ACTION_TIME_CHANGED");
-                    initTodayData();
+//                    initTodayData();
                 }
             }
         };
@@ -257,7 +259,7 @@ public class StepService extends Service implements SensorEventListener {
         //android4.4以后可以使用计步传感器
         int VERSION_CODES = Build.VERSION.SDK_INT;
 //        if(VERSION_CODES>=19){
-//            addCountStepListener();
+//            addCountStepListener();  使用系统自带的计步算法
 //        }else{
             addBasePedoListener();
 //        }
@@ -315,6 +317,7 @@ public class StepService extends Service implements SensorEventListener {
         stepDetector.setOnSensorChangeListener(new StepDetector.OnSensorChangeListener() {
             @Override
             public void onChange() {
+                saveStep();
                 updateNotification("今日步数:"+StepDetector.CURRENT_STEP+" 步");
             }
         });
@@ -437,5 +440,12 @@ public class StepService extends Service implements SensorEventListener {
         }
     }
 
+    //保存当日步数
+    private void saveStep() {
+        sharedPreferences = getSharedPreferences(Constant.SHAREDPREFERENCE_STEP_NUM_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putInt(Constant.TODAY_STEP_NUM, StepDetector.CURRENT_STEP);
+        editor.commit();
+    }
 
 }
