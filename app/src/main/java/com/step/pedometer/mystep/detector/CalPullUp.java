@@ -9,13 +9,13 @@ import com.step.pedometer.mystep.detector.BaseSport;
  */
 
 public class CalPullUp extends BaseSport {
-    private static float THRESHOLD_TIME = 1000;
-    private static float THRESHOLD_FAIL_TIME = 3000;
-    private static float THRESHOLD = 20.0F;
-    private static float THRESHOLD_MIN = 12.0F;
-    private static float THRESHOLD_MAX = 16.0F;
+    private static long INTERVAL_TIME = 1000;//两次运动之间的间隔时间
+    private static long THRESHOLD_FAIL_TIME = 1500;//失败之后一段时间内的引体向上不计数
+    private static float THRESHOLD_NOT_STANDARD = 20.0F;
+    private static float THRESHOLD = 7.0F;
 
-    private float timeOfLastFail = -3000;
+    private long timeOfLastFail = -3000;
+    private long timeOfLastSuccess = -3000;
 
     public CalPullUp() {
         super();
@@ -30,18 +30,22 @@ public class CalPullUp extends BaseSport {
     }
 
     public void calSportNum(float avg) {
+        long currentTime = System.currentTimeMillis();
         if (gravityOld == 0) {
             gravityOld = avg;
-        } else {
-            if (System.currentTimeMillis() - timeOfLastFail >= THRESHOLD_FAIL_TIME
-                    && DetectorPeak(avg, gravityOld)) {
-                if (peakOfWave >= THRESHOLD_MIN && peakOfWave <= THRESHOLD_MAX) {
+        } else if (currentTime - timeOfLastFail >= THRESHOLD_FAIL_TIME && currentTime - timeOfLastSuccess >= INTERVAL_TIME){
+            if (DetectorPeak(avg, gravityOld, currentTime)) {
+                if (valleyOfWave <= THRESHOLD) {
                     sportNum++;
+                    timeOfLastSuccess = currentTime;
                 }
             }
         }
         gravityOld = avg;
     }
+
+
+
 
     /**
      * 监测波峰
@@ -57,7 +61,7 @@ public class CalPullUp extends BaseSport {
      * @param oldValue
      * @return
      */
-    public boolean DetectorPeak(float newValue, float oldValue) {
+    public boolean DetectorPeak(float newValue, float oldValue, long currentTime) {
         lastStatus = isDirectionUp;
         if (newValue >= oldValue) {
             isDirectionUp = true;
@@ -67,23 +71,20 @@ public class CalPullUp extends BaseSport {
             continueUpCount = 0;
             isDirectionUp = false;
         }
-        if (!isDirectionUp && lastStatus &&
-                (continueUpFormerCount >= 2)) {
+        if (!isDirectionUp && lastStatus && (continueUpFormerCount >= 2)) {
             //此时为波峰
-            if (oldValue >= THRESHOLD) {
+            if (newValue >= THRESHOLD_NOT_STANDARD) {
                 //检测到大加速度，此次引体向上作废
-                timeOfLastFail = System.currentTimeMillis();
+                timeOfLastFail = currentTime;
                 return false;
             }
-            if (System.currentTimeMillis() - timeOfLastPeak >= THRESHOLD_TIME) {
-                peakOfWave = oldValue;
-                timeOfLastPeak = System.currentTimeMillis();
-                return true;
-            } else return false;
+            peakOfWave = oldValue;
+            timeOfLastPeak = currentTime;
+            return true;
         } else if (!lastStatus && isDirectionUp) {
             //此时为波谷
             valleyOfWave = oldValue;
-            timeOfLastValley = System.currentTimeMillis();
+            timeOfLastValley = currentTime;
             return false;
         } else {
             return false;
