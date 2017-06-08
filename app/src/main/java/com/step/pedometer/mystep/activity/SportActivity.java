@@ -81,7 +81,7 @@ public class SportActivity extends Activity {
             numYintixiangshang = sharedPreferences.getInt(Constant.YINTIXIANGSHANG, 0);
         }
         setSportNum(textViewFuwocheng, "俯卧撑:", numFuwocheng);
-        setSportNum(textViewYintixiangshang, "不标准引体向上:", numYintixiangshang);
+        setSportNum(textViewYintixiangshang, "引体向上:", numYintixiangshang);
         setSportNum(textViewYangwoqizuo, "仰卧起坐:", numYangwoqizuo);
     }
 
@@ -221,19 +221,8 @@ public class SportActivity extends Activity {
             } else if (flagYintixiangshang){
                 //引体向上
                 calPullUp.calSportNum(average);
-<<<<<<< HEAD:app/src/main/java/com/step/pedometer/mystep/SportActivity.java
-                setSportNum(textViewYintixiangshang, "不标准引体向上:", calPullUp.sportNum);
-=======
                 setSportNum(textViewYintixiangshang, "引体向上:", calPullUp.sportNum);
->>>>>>> Test:app/src/main/java/com/step/pedometer/mystep/activity/SportActivity.java
             }
-//            minX = min(minX, x);maxX = max(maxX, x);
-//            minY = min(minY, y);maxY = max(maxY, y);
-//            minZ = min(minZ, z);maxZ = max(maxZ, z);
-//            textViewGravityX.setText("x:" + x + " max:" + maxX + "min:" + minX);
-//            textViewGravityY.setText("y:" + y + " max:" + maxY + "min:" + minY);
-//            textViewGravityZ.setText("z:" + z + " max:" + maxZ + "min:" + minZ);
-
         }
 
         @Override

@@ -69,13 +69,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/textViewYintixiangshang"
             android:textSize="30sp"
-<<<<<<< HEAD
-            tools:text="不标准引体向上：0个"
-            android:text="不标准引体向上：0个" />
-=======
             android:text="引体向上：0个"
             tools:text="引体向上：0个" />
->>>>>>> Test
+
 
         <Button
             android:text="开始"

@@ -1,12 +1,14 @@
 package com.step.pedometer.mystep.utils;
 
+import com.step.pedometer.mystep.detector.BaseSport;
+
 /**
  * 计算引体向上运动个数的类
  * 因为标准的引体向上难以测量，所以测量不标准的引体向上
  * Created by Administrator on 2017/5/7 0007.
  */
 
-public class CalPullUp extends BaseSport{
+public class CalPullUp extends BaseSport {
     private static float THRESHOLD = 20.0F;
 
     public CalPullUp() {

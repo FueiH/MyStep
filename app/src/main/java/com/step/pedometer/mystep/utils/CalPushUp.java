@@ -1,5 +1,7 @@
 package com.step.pedometer.mystep.utils;
 
+import com.step.pedometer.mystep.detector.BaseSport;
+
 /**
  * 计算俯卧撑个数的类
  * 通过波峰波谷的阈值来判断是否合格,只用三轴加速度中的z来判断

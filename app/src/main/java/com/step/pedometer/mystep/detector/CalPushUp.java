@@ -1,5 +1,6 @@
 package com.step.pedometer.mystep.detector;
 
+import com.step.pedometer.mystep.config.Constant;
 import com.step.pedometer.mystep.detector.BaseSport;
 
 /**
@@ -11,7 +12,7 @@ import com.step.pedometer.mystep.detector.BaseSport;
  */
 
 public class CalPushUp extends BaseSport {
-    private static int POINT_NUM = 8;
+    private static int POINT_NUM = 10;
     private int cntPoint = 0;
     private boolean flagUpOrDown = false;//false表示俯卧撑还没往下做，true表示已经往下做了
 
@@ -86,12 +87,12 @@ public class CalPushUp extends BaseSport {
             continueUpCount = 0;
             isDirectionUp = false;
         }
-        if (!isDirectionUp && lastStatus && continueUpFormerCount >= 2 && oldValue > peakOfWave) {
+        if (!isDirectionUp && lastStatus && continueUpFormerCount >= 2 && oldValue > peakOfWave && oldValue >= Constant.PUSH_UP_PEAK) {
             //此时为波峰,只取最高的波峰
             peakOfWave = oldValue;
             timeOfLastPeak = System.currentTimeMillis();
             return true;
-        } else if (!lastStatus && isDirectionUp && oldValue < valleyOfWave) {
+        } else if (!lastStatus && isDirectionUp && oldValue < valleyOfWave && oldValue <= Constant.PUSH_UP_VALLEY) {
             //此时为波谷,只取最低的波谷
             valleyOfWave = oldValue;
             timeOfLastValley = System.currentTimeMillis();

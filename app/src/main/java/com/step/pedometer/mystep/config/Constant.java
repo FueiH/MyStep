@@ -45,4 +45,10 @@ public class Constant {
     //步数检测相关
     public static final float RUN_OR_WALK_THRESHOLD = 18;
 
+
+
+    //运动检测相关
+    public static final float PUSH_UP_PEAK = 12.0F;
+    public static final float PUSH_UP_VALLEY = 6.0F;
+
 }
