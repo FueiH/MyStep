@@ -11,7 +11,7 @@ import com.step.pedometer.mystep.detector.BaseSport;
  */
 
 public class CalPushUp extends BaseSport {
-    private static int POINT_NUM = 13;
+    private static int POINT_NUM = 8;
     private int cntPoint = 0;
     private boolean flagUpOrDown = false;//false表示俯卧撑还没往下做，true表示已经往下做了
 

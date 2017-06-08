@@ -10,7 +10,7 @@ import android.hardware.SensorEventListener;
  */
 
 public class FallDetector implements SensorEventListener {
-    private static float THREAD = 40;//加速度阈值，大于这个值则判断为跌倒
+    private static float THREAD = 30;//加速度阈值，大于这个值则判断为跌倒
     private static float average = 0; //x,y,z三轴加速度的平均值
     private float gravityOld = 0; //上次传感器的值
     private float peakOfWave = 0; //波峰值，如果大于阈值则确认是摔倒
