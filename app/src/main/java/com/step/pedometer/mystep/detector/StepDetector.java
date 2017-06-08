@@ -6,6 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.util.Log;
 
+import com.step.pedometer.mystep.config.Constant;
 import com.step.pedometer.mystep.utils.CountDownTimer;
 
 import java.util.Timer;
@@ -57,6 +58,8 @@ public class StepDetector implements SensorEventListener {
     //初始阈值
     private float ThreadValue=(float)2.0;
 
+
+
     //初始范围
     private float minValue=11f;
     private float maxValue=19.6f;
@@ -65,6 +68,8 @@ public class StepDetector implements SensorEventListener {
      * 0-准备计时，1-计时中，2-正常计步中
      */
     private int CountTimeState=0;
+    //记录当前运动的状态
+    public static int CURRENT_STATE=0;// 0表示静止，1表示步行，2表示跑步
     //记录当前的步数
     public static int CURRENT_STEP=0;
     //记录临时的步数
@@ -197,6 +202,11 @@ public class StepDetector implements SensorEventListener {
         if (!isDirectionUp&&lastStatus&&(continueUpFormerCount>=2&&(oldValue>=minValue))){
             //满足上面波峰的四个条件，此时为波峰状态
             peakOfWave=oldValue;
+            if (peakOfWave >= Constant.RUN_OR_WALK_THRESHOLD) {
+                CURRENT_STATE = 2;
+            } else {
+                CURRENT_STATE = 1;
+            }
             return true;
         } else if(!lastStatus&&isDirectionUp){
             //满足波谷条件，此时为波谷状态

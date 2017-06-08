@@ -84,6 +84,7 @@ public class StepService extends Service implements SensorEventListener {
                         Bundle bundle=new Bundle();
                         //将现在的步数以消息的形式进行发送
                         bundle.putInt("step",StepDetector.CURRENT_STEP);
+                        bundle.putInt("state",StepDetector.CURRENT_STATE);
                         replyMsg.setData(bundle);
                         messenger.send(replyMsg);  //发送要返回的消息
                     } catch (RemoteException e) {

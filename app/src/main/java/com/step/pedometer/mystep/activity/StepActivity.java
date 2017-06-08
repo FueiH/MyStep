@@ -75,7 +75,7 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
         switch (msg.what) {
             case Constant.MSG_FROM_SERVER:
                 //更新步数
-                updateData(msg.getData().getInt("step"));
+                updateData(msg.getData().getInt("step"), msg.getData().getInt("state"));
                 delayHandler.sendEmptyMessageDelayed(Constant.REQUEST_SERVER, TIME_INTERVAL);
                 break;
             case Constant.REQUEST_SERVER:
@@ -91,15 +91,19 @@ public class StepActivity extends AppCompatActivity implements Handler.Callback 
         return false;
     }
 
-    public void updateData(int param) {
+    public void updateData(int param, int state) {
         todayStepNum = param;
         textStepNum.setText(param + "步");
         Step2Energy(param);
         Step2Distance(param);
         textEnergy.setText(decimalFormat.format(this.energy) + "大卡");
         textDistance.setText(decimalFormat.format(this.distance) + "km");
+        if (previousStepNum == param) {
+            //静止状态，步数没变
+            state = 0;
+        }
         setSpeed(param);
-        setStatus(this.speed);
+        setStatus(state);
     }
 
     public void initData() {

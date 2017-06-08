@@ -42,4 +42,7 @@ public class Constant {
     public static final String DEFAULT_DATE = "0000-00-00";
 
 
+    //步数检测相关
+    public static final float RUN_OR_WALK_THRESHOLD = 18;
+
 }
